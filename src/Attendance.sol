@@ -78,6 +78,7 @@ contract Attendance is Owned {
         student.name = _name;
     }
 
+    // creates students in batch
     function createStudents(uint256[] memory _ages, bytes32[] memory _names) external onlyOwner {
         if(_ages.length != _names.length) revert InvalidData();
         uint256 agesLen_ = _ages.length;
@@ -95,6 +96,7 @@ contract Attendance is Owned {
         student.attendanceCount++;
     }
 
+    // increment attendance in batch
     function incrementAttendances(uint256[] memory _studentIds) external onlyAuthorized {
         for(uint i = 0; i < _studentIds.length; i++) {
             if(i >= studentCount) revert InvalidId();
