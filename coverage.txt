@@ -1,0 +1,10 @@
+Compiling 28 files with 0.8.25
+Solc 0.8.25 finished in 3.36s
+Compiler run [32msuccessful![0m
+Analysing contracts...
+Running tests...
+| File                 | % Lines        | % Statements   | % Branches    | % Funcs       |
+|----------------------|----------------|----------------|---------------|---------------|
+| script/Counter.s.sol | 0.00% (0/1)    | 0.00% (0/1)    | 100.00% (0/0) | 0.00% (0/2)   |
+| src/Attendance.sol   | 41.18% (21/51) | 38.46% (25/65) | 7.14% (1/14)  | 45.45% (5/11) |
+| Total                | 40.38% (21/52) | 37.88% (25/66) | 7.14% (1/14)  | 38.46% (5/13) |
