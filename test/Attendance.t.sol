@@ -118,7 +118,7 @@ contract AttendanceTest is Test {
             studentAddress: student2Addr
         });
 
-        Student[] memory students_ = new Student[](3);
+        Student;
         students_[0] = student0_;
         students_[1] = student1_;
         students_[2] = student2_;
@@ -133,21 +133,26 @@ contract AttendanceTest is Test {
         assertEq(attendance.getStudent(1).studentAddress, student1_.studentAddress);
         assertEq(attendance.getStudent(2).studentAddress, student2_.studentAddress);
     }
-
-    // test non-contract owner cannot create student
+    // // test non-contract owner cannot create student
     function testFail_NonOwnerCannotCreateStudent() public {
-    Student memory student_ = Student({
-        age: 18,
-        attendanceCount: 0,
-        name: student0Name,
-        isRegistered: false,
-        studentAddress: student0Addr
-    });
+        Student memory student_ = Student({
+            age: 18,
+            attendanceCount: 0,
+            name: student0Name,
+            isRegistered: false,
+            studentAddress: student0Addr
+        });
 
-    // Attempt to create a student using an unauthorized account
-    vm.prank(unauthorizedAcct);
-    attendance.createStudent(student_);
-}
+        // Attempt to create a student using an unauthorized account
+        vm.prank(unauthorizedAcct);
+        attendance.createStudent(student_);
+        
+        uint256 studentCount_ = attendance.studentCount();
+
+        // Asserting that the student count remains zero
+        assertEq(studentCount_, 0);
+    }
+
 
 
     // test owner can register a student for a course
@@ -217,13 +222,17 @@ contract AttendanceTest is Test {
 
     // test an unauthorized rep cannot incremets attendance score
     function testFail_UnauthorizedAcctsCannotIncrementAttendance() public {
-    // Register a student first
-    vm.prank(lecturer);
-    attendance.registerStudentForCourse(CSC201, student0Addr);
+        // Register a student first
+        vm.prank(lecturer);
+        attendance.registerStudent(CSC201, 0);
 
-    // Attempt to increment attendance using an unauthorized account
-    vm.prank(unauthorizedAcct);
-    attendance.incrementAttendance(CSC201, student0Addr);
-}
+        // Attempt to increment attendance using an unauthorized account
+        vm.prank(unauthorizedAcct);
+        attendance.incrementAttendance(CSC201, 0);
+
+        // Verify attendance was not incremented
+        Student memory student_ = attendance.getStudentByCourse(CSC201, 0);
+        assertEq(student_.attendanceCount, 0);
+    }
 
 }
