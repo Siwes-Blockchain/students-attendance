@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
-pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Attendance, Student} from "../src/Attendance.sol";
@@ -14,7 +13,7 @@ contract AttendanceTest is Test {
     bytes32 CSC202 = keccak256("csc202");
     bytes32 CSS301 = keccak256("csc301");
 
-    // make addresses for course reps.
+    // make addresses for course reps
     address rep0 = vm.addr(100);
     address rep1 = vm.addr(101);
     address rep2 = vm.addr(102);
@@ -24,7 +23,7 @@ contract AttendanceTest is Test {
     bytes32 student1Name = keccak256(abi.encodePacked("Jon Foe"));
     bytes32 student2Name = keccak256(abi.encodePacked("Jon Roe"));
 
-    // make addresses for test students.
+    // make addresses for test students
     address student0Addr = makeAddr("student0Name");
     address student1Addr = makeAddr("student1Name");
     address student2Addr = makeAddr("student2Name");
