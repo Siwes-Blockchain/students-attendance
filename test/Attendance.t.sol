@@ -31,7 +31,6 @@ contract AttendanceTest is Test {
     // make an unauthorized address.
     address unauthorizedAcct = vm.addr(uint256(bytes32("unauthorized")));
 
-
     function setUp() public {
         // set up Attendance contract with `lecturer` as owner
         vm.prank(lecturer);
@@ -47,7 +46,7 @@ contract AttendanceTest is Test {
     function test_OwnerCanAuthorizeForCourse() public {
         vm.startPrank(lecturer);
 
-        address[] memory courseReps_ = new address[](3);
+        address;
         courseReps_[0] = rep0;
         courseReps_[1] = rep1;
         courseReps_[2] = rep2;
@@ -57,9 +56,9 @@ contract AttendanceTest is Test {
         bool rep0Authorized = attendance.authorizedCourseReps(CSC201, rep0);
         bool rep1Authorized = attendance.authorizedCourseReps(CSC201, rep1);
         bool rep2Authorized = attendance.authorizedCourseReps(CSC201, rep2);
-       
+
         bool unauthorized = attendance.authorizedCourseReps(CSC201, unauthorizedAcct);
-        
+
         vm.stopPrank();
         assert(rep0Authorized);
         assert(rep1Authorized);
@@ -132,7 +131,8 @@ contract AttendanceTest is Test {
         assertEq(attendance.getStudent(1).studentAddress, student1_.studentAddress);
         assertEq(attendance.getStudent(2).studentAddress, student2_.studentAddress);
     }
-    // // test non-contract owner cannot create student
+
+    // test non-contract owner cannot create student
     function testFail_NonOwnerCannotCreateStudent() public {
         Student memory student_ = Student({
             age: 18,
@@ -145,93 +145,86 @@ contract AttendanceTest is Test {
         // Attempt to create a student using an unauthorized account
         vm.prank(unauthorizedAcct);
         attendance.createStudent(student_);
-        
+
         uint256 studentCount_ = attendance.studentCount();
 
         // Asserting that the student count remains zero
         assertEq(studentCount_, 0);
     }
 
-
-
     // test owner can register a student for a course
     function test_OwnerCanRegisterStudentForCourse() public {
-    vm.prank(lecturer);
+        vm.prank(lecturer);
 
-    // Register a student for CSC201
-    attendance.registerStudentForCourse(CSC201, student0Addr);
+        // Register a student for CSC201
+        attendance.registerStudentForCourse(CSC201, student0Addr);
 
-    // Verify that the student is registered
-    assertTrue(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
-}
-
+        // Verify that the student is registered
+        assertTrue(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
+    }
 
     // test a course rep can register a student for a course
     function test_CourseRepCanRegisterStudentForCourse() public {
-    // Authorize a course rep first
-    vm.prank(lecturer);
-    address;
-    courseReps_[0] = rep0;
-    attendance.authorizeCourseRep(CSC201, courseReps_, true);
+        // Authorize a course rep first
+        vm.prank(lecturer);
+        address;
+        courseReps_[0] = rep0;
+        attendance.authorizeCourseRep(CSC201, courseReps_, true);
 
-    // Now, the course rep can register a student
-    vm.prank(rep0);
-    attendance.registerStudentForCourse(CSC201, student0Addr);
+        // Now, the course rep can register a student
+        vm.prank(rep0);
+        attendance.registerStudentForCourse(CSC201, student0Addr);
 
-    // Verify that the student is registered
-    assertTrue(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
-}
-
+        // Verify that the student is registered
+        assertTrue(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
+    }
 
     // test a student can de-register themselves from a course
     function test_StudentCanDeRegisterThemself() public {
-    vm.prank(lecturer);
-    attendance.registerStudentForCourse(CSC201, student0Addr);
+        vm.prank(lecturer);
+        attendance.registerStudentForCourse(CSC201, student0Addr);
 
-    // Now, the student de-registers themselves
-    vm.prank(student0Addr);
-    attendance.deRegisterFromCourse(CSC201);
+        // Now, the student de-registers themselves
+        vm.prank(student0Addr);
+        attendance.deRegisterFromCourse(CSC201);
 
-    // Verify that the student is no longer registered
-    assertFalse(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
-}
-
+        // Verify that the student is no longer registered
+        assertFalse(attendance.isStudentRegisteredForCourse(CSC201, student0Addr));
+    }
 
     // test authorized reps can increment attendance score
     function test_CourseRepsCanIncrmentAttendance() public {
-    // Authorize a course rep first
-    vm.prank(lecturer);
-    address;
-    courseReps_[0] = rep0;
-    attendance.authorizeCourseRep(CSC201, courseReps_, true);
+        // Authorize a course rep first
+        vm.prank(lecturer);
+        address;
+        courseReps_[0] = rep0;
+        attendance.authorizeCourseRep(CSC201, courseReps_, true);
 
-    // Register a student first
-    vm.prank(lecturer);
-    attendance.registerStudentForCourse(CSC201, student0Addr);
+        // Register a student first
+        vm.prank(lecturer);
+        attendance.registerStudentForCourse(CSC201, student0Addr);
 
-    // Now, the course rep increments attendance
-    vm.prank(rep0);
-    attendance.incrementAttendance(CSC201, student0Addr);
+        // Now, the course rep increments attendance
+        vm.prank(rep0);
+        attendance.incrementAttendance(CSC201, student0Addr);
 
-    // Verify that the student's attendance count has increased
-    (, uint256 attendanceCount, , , ) = attendance.getStudent(student0Addr);
-    assertEq(attendanceCount, 1);
-}
+        // Verify that the student's attendance count has increased
+        (, uint256 attendanceCount, , , ) = attendance.getStudent(student0Addr);
+        assertEq(attendanceCount, 1);
+    }
 
-
-    // test an unauthorized rep cannot incremets attendance score
+    // test an unauthorized rep cannot increment attendance score
     function testFail_UnauthorizedAcctsCannotIncrementAttendance() public {
         // Register a student first
         vm.prank(lecturer);
-        attendance.registerStudent(CSC201, 0);
+        attendance.registerStudentForCourse(CSC201, student0Addr);
 
         // Attempt to increment attendance using an unauthorized account
         vm.prank(unauthorizedAcct);
-        attendance.incrementAttendance(CSC201, 0);
+        attendance.incrementAttendance(CSC201, student0Addr);
 
         // Verify attendance was not incremented
-        Student memory student_ = attendance.getStudentByCourse(CSC201, 0);
+        Student memory student_ = attendance.getStudent(student0Addr);
         assertEq(student_.attendanceCount, 0);
     }
-
 }
