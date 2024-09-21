@@ -1,0 +1,8 @@
+allowToAuth.tree
+├── when caller is not owner
+│   └── it should revert.
+└── when caller is owner
+    └── given the course addresses and isAuthenticated is set
+        └── it should set the auth for the addresses in the `authorizedCourseReps` mapping.
+    └── given the course addresses and isAuthenticated is unset
+        └── it should unset the auth for the addresses in the `authorizedCourseReps` mapping.

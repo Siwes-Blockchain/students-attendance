@@ -1,0 +1,28 @@
+RegisterStudents::registerStudents
+├── when caller is not authorized
+│   └── it reverts with the error {Unauthorized}.
+├── when student id is invalid
+│   └── it reverts with the error {InvalidId}.
+├── when student is already registered
+│   └── it reverts with the error {AlreadyRegistered}.
+├── when course provided is invalid
+│   └── it should revert.
+└── when caller is authorized for course
+    └── when course and student id are valid
+        └── it should register the student to {courseToStudents} mapping
+
+RegisterStudents::deregisterStudents
+├── when caller is not authorized or not the student
+│   └── it reverts with the error {Unauthorized}.
+├── when student id is invalid
+│   └── it reverts with the error {InvalidId}.
+├── when student is not registered for course
+│   └── it reverts with the error {NotRegistered}.
+├── when called by an authorized account
+│   └── given that student is registered for course
+│       ├── it deregisters the student from the {courseToStudents} mapping
+│       └── it emits a {DeregisteredStudent} event.
+└── when called by the student
+    └── given that the student is registered for course
+        ├── it deregisters the student from the {courseToStudents} mapping
+        └── it emits a {DeregisteredStudent} event.

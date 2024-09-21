@@ -1,0 +1,10 @@
+createStudent.tree
+├── when caller is not owner
+│   └── it should revert
+└── when caller is owner
+    └── when the student struct is provided
+        └── it should add the student to the {StudentsList} mapping.
+        └── it should emit a {studentCreation} event.
+    └── given the student struct list is provided
+        └── it should add each students to the {StudentsList} mapping.
+        └── it should emit a {studentCreation} event.
