@@ -1,0 +1,18 @@
+Attendance::incrementAttendance
+├── when caller is not authorized
+│   └── it reverts with the error {Unauthorized}.
+├── when student id is invalid
+│   └── it reverts with the error {InvalidId}.
+└── when caller and student id are valid
+    ├── it should increment the student attendance in the {courseToStudents} mapping.
+    └── it should emit a {IncrementedAttendance} event.
+
+
+Attendance::incrementAttendances
+├── when caller is not authorized
+│   └── it reverts with the error {Unauthorized}.
+├── when student id is invalid
+│   └── it reverts with the error {InvalidId}.
+└── when caller and all student ids are valid
+    ├── it should increment the student attendance in the {courseToStudents} mapping.
+    └── it should emit a {IncrementedAttendance} event for each student.
