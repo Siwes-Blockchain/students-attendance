@@ -58,8 +58,8 @@ contract Attendance is Owned {
         for (uint256 i = 0; i < _courseRep.length; i++) {
             address courseRep_ = _courseRep[i];
             authorizedCourseReps[_course][courseRep_] = _isAuthenticated;
-            emit classRepAuthorized(_course, courseRep_);
             
+            emit classRepAuthorized(_course, courseRep_);
         }
     }
 
@@ -68,8 +68,9 @@ contract Attendance is Owned {
         Student storage student_ = StudentsList[studentCount++];
         student_.age = _students.age;
         student_.name = _students.name;
-        student_.isRegistered = true;
+        student_.isRegistered = false;
         student_.studentAddress = _students.studentAddress;
+
         emit studentCreation(student_.name, student_.age, student_.studentAddress);
     }
 
@@ -80,8 +81,9 @@ contract Attendance is Owned {
             Student storage student_ = StudentsList[studentCount++];
             student_.age = _students[i].age;
             student_.name = _students[i].name;
-            student_.isRegistered = true;
+            student_.isRegistered = false;
             student_.studentAddress = _students[i].studentAddress;
+
             emit studentCreation(student_.name, student_.age, student_.studentAddress);
         }
     }
@@ -91,7 +93,7 @@ contract Attendance is Owned {
         _onlyValidId(_studentId);
         if(!_isAuthorized(_course)) revert Unauthorized();
         Student memory student_ = StudentsList[_studentId];
-        if(student_.isRegistered) revert AlreadyRegistered(_studentId);
+        if(courseToStudents[_course][_studentId].isRegistered) revert AlreadyRegistered(_studentId);
         student_.isRegistered = true;
         courseToStudents[_course][_studentId] = student_;
 
@@ -101,13 +103,12 @@ contract Attendance is Owned {
     // de-register students from a course
     function deregisterStudent(bytes32 _course, uint256 _studentId) public {
         _onlyValidId(_studentId);
-        Student memory student_ = StudentsList[_studentId];
-        if(!_isAuthorized(_course) || msg.sender != student_.studentAddress) revert Unauthorized();
+        Student storage student_ = courseToStudents[_course][_studentId];
+        if(!_isAuthorized(_course) && msg.sender != student_.studentAddress) revert Unauthorized();
         if(!student_.isRegistered) revert NotRegistered(_studentId);
 
-        Student storage courseStudent_ = courseToStudents[_course][_studentId];
-        courseStudent_.attendanceCount = 0;
-        courseStudent_.isRegistered = false;
+        student_.attendanceCount = 0;
+        student_.isRegistered = false;
 
         emit DeregisteredStudent(_course, _studentId);
     }
@@ -117,7 +118,9 @@ contract Attendance is Owned {
         _onlyValidId(_studentId);
         if(!_isAuthorized(_course)) revert Unauthorized();
         Student storage student_ = courseToStudents[_course][_studentId];
+        if(!student_.isRegistered) revert NotRegistered(_studentId);
         student_.attendanceCount++;
+
         emit IncrementedAttendance(_course, _studentId);
     }
 
@@ -128,7 +131,9 @@ contract Attendance is Owned {
             uint256 studentId_ = _studentIds[i];
             _onlyValidId(studentId_);
             Student storage student_ = courseToStudents[_course][studentId_];
+            if(!student_.isRegistered) revert NotRegistered(studentId_);
             student_.attendanceCount++;
+
             emit IncrementedAttendance(_course, studentId_);
         }
     }
