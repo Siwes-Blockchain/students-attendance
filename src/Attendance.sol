@@ -13,7 +13,7 @@ error NotRegistered(uint256 studentId);
 struct Student {
     uint256 age;
     uint256 attendanceCount;
-    bytes32 name;
+    string name;
     bool isRegistered;
     address studentAddress;
 }
@@ -33,7 +33,7 @@ contract Attendance is Owned {
 
     // student creation event
     event studentCreation(
-        bytes32 indexed name,
+        string indexed name,
         uint256 indexed age,
         address indexed studentAddress
     );
