@@ -19,9 +19,9 @@ contract AttendanceTest is Test {
     address rep2 = vm.addr(102);
 
     // make names for students
-    bytes32 student0Name = keccak256(abi.encodePacked("Jon Doe"));
-    bytes32 student1Name = keccak256(abi.encodePacked("Jon Foe"));
-    bytes32 student2Name = keccak256(abi.encodePacked("Jon Roe"));
+    string student0Name = "Jon Doe";
+    string student1Name = "Jon Foe";
+    string student2Name = "Jon Roe";
 
     // make addresses for test students
     address student0Addr = makeAddr("student0Name");
