@@ -1,6 +1,19 @@
 name: test
 
-on: workflow_dispatch
+# on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{github.ref}}
+  cancel-in-progress: true
+
+
 
 env:
   FOUNDRY_PROFILE: ci
